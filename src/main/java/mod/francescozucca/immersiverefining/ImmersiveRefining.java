@@ -2,11 +2,14 @@ package mod.francescozucca.immersiverefining;
 
 import mod.francescozucca.immersiverefining.block.TankBlock;
 import mod.francescozucca.immersiverefining.block.entity.FluidTankBlockEntity;
+import mod.francescozucca.immersiverefining.block.gui.TankScreenHandler;
 import mod.francescozucca.immersiverefining.fluid.CrudeOil;
 import mod.francescozucca.immersiverefining.util.References;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -30,6 +33,7 @@ public class ImmersiveRefining implements ModInitializer {
     public static Block TANK_BLOCK;
 
     public static BlockEntityType<FluidTankBlockEntity> FLUID_TANK_BET;
+    public static ExtendedScreenHandlerType<TankScreenHandler> TANK_SH = new ExtendedScreenHandlerType<>(TankScreenHandler::new);
     @Override
     public void onInitialize() {
 
@@ -38,6 +42,8 @@ public class ImmersiveRefining implements ModInitializer {
                 Registries.BLOCK_ENTITY_TYPE,
                 id("tank_block_entity"),
                 FabricBlockEntityTypeBuilder.create(FluidTankBlockEntity::new, TANK_BLOCK).build());
+
+        Registry.register(Registries.SCREEN_HANDLER, id("tank"), TANK_SH);
 
         FluidStorage.SIDED.registerForBlockEntity((tank, direction) -> tank.fluidStorage, FLUID_TANK_BET);
 

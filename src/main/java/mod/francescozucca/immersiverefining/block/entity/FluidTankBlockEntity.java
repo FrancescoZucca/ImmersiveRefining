@@ -1,6 +1,7 @@
 package mod.francescozucca.immersiverefining.block.entity;
 
 import mod.francescozucca.immersiverefining.ImmersiveRefining;
+import mod.francescozucca.immersiverefining.block.gui.TankScreenHandler;
 import mod.francescozucca.immersiverefining.util.ImplementedInventory;
 import mod.francescozucca.immersiverefining.util.References;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -14,6 +15,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
@@ -29,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
 
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
     public FluidTankBlockEntity(BlockPos pos, BlockState state) {
         super(ImmersiveRefining.FLUID_TANK_BET, pos, state);
@@ -66,7 +69,7 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return null;
+        return new TankScreenHandler(syncId, playerInventory, this);
     }
 
     public final SingleVariantStorage<FluidVariant> fluidStorage = new SingleVariantStorage<>() {
@@ -94,6 +97,7 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
+        Inventories.writeNbt(nbt, inventory);
         nbt.put("fluidVariant", fluidStorage.variant.getNbt());
         nbt.putLong("amount", fluidStorage.amount);
         super.writeNbt(nbt);
@@ -102,6 +106,7 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
+        Inventories.readNbt(nbt, inventory);
         fluidStorage.variant = FluidVariant.fromNbt(nbt.getCompound("fluidVariant"));
         fluidStorage.amount = nbt.getLong("amount");
     }

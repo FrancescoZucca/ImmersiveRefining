@@ -1,12 +1,15 @@
 package mod.francescozucca.immersiverefining.client;
 
 import mod.francescozucca.immersiverefining.ImmersiveRefining;
+import mod.francescozucca.immersiverefining.client.gui.TankHandledScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
@@ -23,5 +26,6 @@ public class ImmersiveRefiningClient implements ClientModInitializer {
 
         BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getSolid(), ImmersiveRefining.CRUDE_OIL, ImmersiveRefining.CRUDE_OIL_FLOWING);
 
+        HandledScreens.register(ImmersiveRefining.TANK_SH, TankHandledScreen::new);
     }
 }

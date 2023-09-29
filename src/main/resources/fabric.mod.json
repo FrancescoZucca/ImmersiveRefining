@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "ImmersiveRefining",
   "description": "",
-  "authors": [],
+  "authors": ["Francesco Zucca"],
   "contact": {
     "repo": "https://github.com/francescozucca/ImmersiveRefining"
   },
