@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "immersiverefining",
+  "version": "${version}",
+  "name": "ImmersiveRefining",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/francescozucca/ImmersiveRefining"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/immersiverefining/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "mod.francescozucca.immersiverefining.client.ImmersiveRefiningClient"
+    ],
+    "main": [
+      "mod.francescozucca.immersiverefining.ImmersiveRefining"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
