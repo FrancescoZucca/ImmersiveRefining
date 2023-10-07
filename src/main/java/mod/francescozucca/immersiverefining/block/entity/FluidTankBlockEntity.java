@@ -46,6 +46,8 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(pos);
+        buf.writeLong(fluidStorage.amount);
+        buf.writeNbt(fluidStorage.variant.getNbt());
     }
 
     @Override
@@ -64,8 +66,6 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
         return createNbt();
     }
 
-
-
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
@@ -80,7 +80,7 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
 
         @Override
         protected long getCapacity(FluidVariant variant) {
-            return (FluidConstants.BUCKET) / 81;
+            return (8 * FluidConstants.BUCKET) / 81;
         }
 
         @Override
@@ -88,6 +88,8 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
             markDirty();
             if(!world.isClient){
                 var buf = PacketByteBufs.create();
+                buf.writeBlockPos(pos);
+                buf.writeNbt(createNbt());
                 PlayerLookup.tracking(FluidTankBlockEntity.this).forEach(player -> {
                     ServerPlayNetworking.send(player, References.TANK_PACKET_ID, buf);
                 });
@@ -98,7 +100,7 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
     @Override
     protected void writeNbt(NbtCompound nbt) {
         Inventories.writeNbt(nbt, inventory);
-        nbt.put("fluidVariant", fluidStorage.variant.getNbt());
+        nbt.put("fluidVariant", fluidStorage.variant.toNbt());
         nbt.putLong("amount", fluidStorage.amount);
         super.writeNbt(nbt);
     }
@@ -109,5 +111,13 @@ public class FluidTankBlockEntity extends BlockEntity implements ExtendedScreenH
         Inventories.readNbt(nbt, inventory);
         fluidStorage.variant = FluidVariant.fromNbt(nbt.getCompound("fluidVariant"));
         fluidStorage.amount = nbt.getLong("amount");
+    }
+
+    public long getAmount(){
+        return fluidStorage.amount;
+    }
+
+    public FluidVariant getVariant(){
+        return fluidStorage.variant;
     }
 }

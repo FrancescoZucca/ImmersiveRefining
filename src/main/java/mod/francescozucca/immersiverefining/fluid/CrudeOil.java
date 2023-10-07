@@ -29,6 +29,11 @@ public abstract class CrudeOil extends BaseFluid{
         return ImmersiveRefining.CRUDE_OIL_BLOCK.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(state));
     }
 
+    @Override
+    public int getColor() {
+        return 0x000000;
+    }
+
     public static class Flowing extends CrudeOil{
         @Override
         protected void appendProperties(StateManager.Builder<Fluid, FluidState> builder) {

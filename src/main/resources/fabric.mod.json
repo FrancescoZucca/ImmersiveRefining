@@ -12,6 +12,9 @@
   "icon": "assets/immersiverefining/icon.png",
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "mod.francescozucca.immersiverefining.data.DataGenerator"
+    ],
     "client": [
       "mod.francescozucca.immersiverefining.client.ImmersiveRefiningClient"
     ],
@@ -23,5 +26,8 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
-  }
+  },
+  "mixins": [
+    "immersiverefining.mixins.json"
+  ]
 }

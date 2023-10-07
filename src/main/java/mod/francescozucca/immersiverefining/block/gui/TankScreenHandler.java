@@ -1,6 +1,7 @@
 package mod.francescozucca.immersiverefining.block.gui;
 
 import mod.francescozucca.immersiverefining.ImmersiveRefining;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -17,9 +18,13 @@ public class TankScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
     private BlockPos pos;
+    private long amount;
+    private FluidVariant variant;
     public TankScreenHandler(int syncId, PlayerInventory inv, PacketByteBuf buf) {
         this(syncId, inv, new SimpleInventory(2));
         pos = buf.readBlockPos();
+        amount = buf.readLong();
+        variant = FluidVariant.fromNbt(buf.readNbt());
     }
 
     public TankScreenHandler(int syncId, PlayerInventory playerInv, Inventory inventory){
@@ -48,6 +53,12 @@ public class TankScreenHandler extends ScreenHandler {
         }
 
         this.pos = BlockPos.ORIGIN;
+        this.amount = 0;
+        this.variant = FluidVariant.blank();
+    }
+
+    public long getAmount(){
+        return amount;
     }
 
 

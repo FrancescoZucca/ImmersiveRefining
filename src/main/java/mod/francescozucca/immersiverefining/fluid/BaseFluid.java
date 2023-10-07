@@ -16,6 +16,8 @@ import net.minecraft.world.WorldView;
 
 public abstract class BaseFluid extends FlowableFluid {
 
+    public abstract int getColor();
+
     @Override
     public boolean matchesType(Fluid fluid) {
         return fluid == getStill() || fluid == getFlowing();
